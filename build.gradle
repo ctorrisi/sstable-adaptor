@@ -79,15 +79,15 @@ subprojects {
          repo = artifact.repo
          name = artifact.id
          userOrg = artifact.userOrg
-         licenses = artifact.licenses
+         licenses = ['Apache-2.0']
          vcsUrl = 'https://github.com/ctorrisi/sstable-adaptor.git'
          publicDownloadNumbers = true
          publish = true    
          version {
-           name = artifact.version
+           name = '0.2.17.0'
            desc = 'SSTable reader and writer'
            released  = new Date()
-           vcsTag = artifact.version
+           vcsTag = '0.2.17.0'
          }
       }
   }  
@@ -98,7 +98,7 @@ subprojects {
             from components.java
             groupId artifact.groupId
             artifactId artifact.id
-            version artifact.version
+            version '0.2.17.0'
         }
      }
    }
