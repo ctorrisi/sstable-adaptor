@@ -80,9 +80,10 @@ subprojects {
          name = artifact.id
          userOrg = artifact.userOrg
          licenses = ['Apache-2.0']
+         websiteUrl = 'https://github.com/ctorrisi/sstable-adaptor'
          vcsUrl = 'https://github.com/ctorrisi/sstable-adaptor.git'
          publicDownloadNumbers = true
-         publish = true    
+         publish = true
          version {
            name = '0.2.17.0'
            desc = 'SSTable reader and writer'
