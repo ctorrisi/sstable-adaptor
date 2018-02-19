@@ -173,6 +173,10 @@ project(':sstable-adaptor-cassandra') {
 
         relocate 'org.apache.cassandra', 'shadow.org.apache.cassandra'
     }
+
+    artifacts {
+        archives shadowJar
+    }
 }
 
 
