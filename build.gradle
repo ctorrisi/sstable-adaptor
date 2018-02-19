@@ -14,6 +14,7 @@ buildscript {
     }
 }
 
+project.version = '0.2.17.0'
 def artifact = new Properties()
 artifact.load(new FileInputStream("deploy.properties"))
 if (project.hasProperty('version'))
@@ -85,10 +86,10 @@ subprojects {
          publicDownloadNumbers = true
          publish = true
          version {
-           name = '0.2.17.0'
+           name = artifact.version
            desc = 'SSTable reader and writer'
            released  = new Date()
-           vcsTag = '0.2.17.0'
+           vcsTag = artifact.version
          }
       }
   }  
@@ -99,7 +100,7 @@ subprojects {
             from components.java
             groupId artifact.groupId
             artifactId artifact.id
-            version '0.2.17.0'
+            version artifact.version
         }
      }
    }
@@ -165,8 +166,10 @@ project(':sstable-adaptor-cassandra') {
     shadowJar {
         zip64 true
         from(project.sourceSets.main.output)
+
+        baseName = 'sstable-adaptor-cassandra'
+        classifier = 'shadow'
         configurations = [project.configurations.runtime]
-        archiveName = "shadow-sstable-adaptor-cassandra.jar"
 
         relocate 'org.apache.cassandra', 'shadow.org.apache.cassandra'
     }
