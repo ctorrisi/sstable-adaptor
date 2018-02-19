@@ -62,6 +62,7 @@ import org.apache.cassandra.io.util.DataOutputStreamPlus;
 import org.apache.cassandra.io.util.FileDataInput;
 import org.apache.cassandra.io.util.FileHandle;
 import org.apache.cassandra.io.util.FileUtils;
+import org.apache.cassandra.io.util.HadoopChannelProxy;
 import org.apache.cassandra.io.util.HadoopFileUtils;
 import org.apache.cassandra.io.util.RandomAccessReader;
 import org.apache.cassandra.metrics.RestorableMeter;
@@ -668,7 +669,7 @@ public abstract class SSTableReader extends SSTable implements SelfRefCounted<SS
         //TODO: Minh fix this!
         String indexSummaryFilename = descriptor.filenameFor(Component.SUMMARY);
 
-        ChannelProxy proxy = ChannelProxy.newInstance(indexSummaryFilename, descriptor.getConfiguration());
+        HadoopChannelProxy proxy = HadoopChannelProxy.newInstance(indexSummaryFilename, descriptor.getConfiguration());
         DataInputStream iStream = null;
         try {
 

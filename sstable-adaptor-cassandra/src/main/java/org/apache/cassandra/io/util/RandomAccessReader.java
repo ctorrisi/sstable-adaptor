@@ -22,6 +22,7 @@ import org.apache.cassandra.io.compress.BufferType;
 import org.apache.cassandra.io.util.Rebufferer.BufferHolder;
 import org.apache.hadoop.conf.Configuration;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteOrder;
 
@@ -47,6 +48,11 @@ public class RandomAccessReader extends RebufferingInputStream implements FileDa
         super(Rebufferer.EMPTY.buffer());
         this.rebufferer = rebufferer;
         this.conf = conf;
+    }
+
+    RandomAccessReader(Rebufferer rebufferer)
+    {
+        this(rebufferer, null);
     }
 
     /**
@@ -204,7 +210,7 @@ public class RandomAccessReader extends RebufferingInputStream implements FileDa
 
         if (newPosition > length())
             throw new IllegalArgumentException(String.format("Unable to seek to position %d in %s (%d bytes) in read-only mode",
-                                                         newPosition, getPath(), length()));
+                                                             newPosition, getPath(), length()));
         reBufferAt(newPosition);
     }
 
@@ -283,6 +289,11 @@ public class RandomAccessReader extends RebufferingInputStream implements FileDa
             super(rebufferer, conf);
         }
 
+        RandomAccessReaderWithOwnChannel(Rebufferer rebufferer)
+        {
+            super(rebufferer);
+        }
+
         @Override
         public void close()
         {
@@ -313,12 +324,35 @@ public class RandomAccessReader extends RebufferingInputStream implements FileDa
     @SuppressWarnings("resource")
     public static RandomAccessReader open(String file, Configuration conf)
     {
-        ChannelProxy channel =  ChannelProxy.newInstance(file, conf);
+        HadoopChannelProxy channel =  HadoopChannelProxy.newInstance(file, conf);
         try
         {
             ChunkReader reader = new SimpleChunkReader(channel, -1, BufferType.ON_HEAP, DEFAULT_BUFFER_SIZE);
             Rebufferer rebufferer = reader.instantiateRebufferer();
             return new RandomAccessReaderWithOwnChannel(rebufferer, conf);
+        }
+        catch (Throwable t)
+        {
+            channel.close();
+            throw t;
+        }
+    }
+
+    /**
+     * Open a RandomAccessReader (not compressed, not mmapped, no read throttling) that will own its channel.
+     *
+     * @param file File to open for reading
+     * @return new RandomAccessReader that owns the channel opened in this method.
+     */
+    @SuppressWarnings("resource")
+    public static RandomAccessReader open(File file)
+    {
+        FileChannelProxy channel = new FileChannelProxy(file);
+        try
+        {
+            ChunkReader reader = new SimpleChunkReader(channel, -1, BufferType.ON_HEAP, DEFAULT_BUFFER_SIZE);
+            Rebufferer rebufferer = reader.instantiateRebufferer();
+            return new RandomAccessReaderWithOwnChannel(rebufferer);
         }
         catch (Throwable t)
         {

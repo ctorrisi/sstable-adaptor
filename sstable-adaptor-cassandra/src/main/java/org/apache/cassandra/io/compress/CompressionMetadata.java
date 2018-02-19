@@ -33,6 +33,7 @@ import org.apache.cassandra.io.util.ChannelProxy;
 import org.apache.cassandra.io.util.DataInputPlus;
 import org.apache.cassandra.io.util.DataOutputPlus;
 import org.apache.cassandra.io.util.DataOutputStreamPlus;
+import org.apache.cassandra.io.util.HadoopChannelProxy;
 import org.apache.cassandra.io.util.HadoopFileUtils;
 import org.apache.cassandra.io.util.Memory;
 import org.apache.cassandra.io.util.SafeMemory;
@@ -118,7 +119,7 @@ public class CompressionMetadata
         boolean isSuccess = false;
 
         while (!isSuccess) {
-            try (ChannelProxy proxy = ChannelProxy.newInstance(indexFilePath, configuration);
+            try (HadoopChannelProxy proxy = HadoopChannelProxy.newInstance(indexFilePath, configuration);
                  DataInputStream stream = new DataInputStream(proxy.getInputStream())) {
                 if (attempt > 0)
                     FBUtilities.sleepQuietly((int) Math.round(Math.pow(2, attempt)) * 1000);

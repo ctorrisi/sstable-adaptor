@@ -9,7 +9,7 @@ buildscript {
         //classpath 'com.netflix.nebula:gradle-netflixoss-project-plugin:3.6.2'
         //classpath "com.netflix.nebula:nebula-release-plugin:4.2.0"
 
-        classpath "com.github.jengelman.gradle.plugins:shadow:1.2.4"
+        classpath "com.github.jengelman.gradle.plugins:shadow:2.0.2"
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
     }
 }
@@ -80,7 +80,7 @@ subprojects {
          name = artifact.id
          userOrg = artifact.userOrg
          licenses = artifact.licenses
-         vcsUrl = 'https://github.com/Netflix/sstable-adaptor.git'
+         vcsUrl = 'https://github.com/ctorrisi/sstable-adaptor.git'
          publicDownloadNumbers = true
          publish = true    
          version {
@@ -109,58 +109,66 @@ project(':sstable-adaptor-cassandra') {
 
     dependencies {
         //compileOnly 'com.google.code.findbugs:annotations'
-        compile "org.antlr:antlr:3.5.2"
-        compile "org.xerial.snappy:snappy-java:1.1.1.7"
-        compile "net.jpountz.lz4:lz4:1.3.0"
-        compile "com.ning:compress-lzf:0.8.4"
-        compile "com.google.guava:guava:18.0"
-        compile "org.hdrhistogram:HdrHistogram:2.1.9"
+        compileOnly "org.antlr:antlr:3.5.2"
+        compileOnly "org.xerial.snappy:snappy-java:1.1.1.7"
+        compileOnly "net.jpountz.lz4:lz4:1.3.0"
+        compileOnly "com.ning:compress-lzf:0.8.4"
+        compileOnly "com.google.guava:guava:18.0"
+        compileOnly "org.hdrhistogram:HdrHistogram:2.1.9"
 
-        compile "commons-codec:commons-codec:1.9"
-        compile "org.apache.commons:commons-lang3:3.1"
-        compile "org.apache.commons:commons-math3:3.2"
-        compile "com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:1.4"
-        compile("com.datastax.cassandra:cassandra-driver-core:3.0.1") {
-            transitive = false
+        compileOnly "commons-codec:commons-codec:1.9"
+        compileOnly "org.apache.commons:commons-lang3:3.1"
+        compileOnly "org.apache.commons:commons-math3:3.2"
+        compileOnly "com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:1.4"
+        compileOnly ('org.apache.cassandra:cassandra-all:3.11.1') {
+            exclude group: 'org.slf4j', module: 'log4j-over-slf4j'
         }
-        compile "org.slf4j:slf4j-api:1.7.7"
-        compile "org.slf4j:jcl-over-slf4j:1.7.7"
-        compile "org.codehaus.jackson:jackson-core-asl:1.9.13"
-        compile "org.codehaus.jackson:jackson-mapper-asl:1.9.13"
-        compile "com.googlecode.json-simple:json-simple:1.1"
-        compile "com.boundary:high-scale-lib:1.0.6"
-        compile "com.github.jbellis:jamm:0.3.0"
-        compile "org.jboss.byteman:byteman:3.0.3"
-        compile "org.jboss.byteman:byteman-submit:3.0.3"
-        compile "org.jboss.byteman:byteman-bmunit:3.0.3"
-        compile "org.openjdk.jmh:jmh-core:1.1.1"
-        compile "org.openjdk.jmh:jmh-generator-annprocess:1.1.1"
-        compile "io.dropwizard.metrics:metrics-core:3.1.0"
-        compile "io.dropwizard.metrics:metrics-jvm:3.1.0"
-        compile "com.addthis.metrics:reporter-config3:3.0.3"
-        compile "org.mindrot:jbcrypt:0.3m"
-        compile "io.airlift:airline:0.6"
-        compile "io.netty:netty-all:4.0.44.Final"
-        compile "com.clearspring.analytics:stream:2.5.2"
-        compile "org.eclipse.jdt.core.compiler:ecj:4.4.2"
-        compile "org.caffinitas.ohc:ohc-core:0.4.4"
-        compile "org.caffinitas.ohc:ohc-core-j8:0.4.4"
-        compile "net.ju-n.compile-command-annotations:compile-command-annotations:1.2.0"
-        compile ("org.fusesource:sigar:1.6.4") {
+        compileOnly "org.slf4j:slf4j-api:1.7.7"
+        compileOnly "org.slf4j:jcl-over-slf4j:1.7.7"
+        compileOnly "org.codehaus.jackson:jackson-core-asl:1.9.13"
+        compileOnly "org.codehaus.jackson:jackson-mapper-asl:1.9.13"
+        compileOnly "com.googlecode.json-simple:json-simple:1.1"
+        compileOnly "com.boundary:high-scale-lib:1.0.6"
+        compileOnly "com.github.jbellis:jamm:0.3.0"
+        compileOnly "org.jboss.byteman:byteman:3.0.3"
+        compileOnly "org.jboss.byteman:byteman-submit:3.0.3"
+        compileOnly "org.jboss.byteman:byteman-bmunit:3.0.3"
+        compileOnly "org.openjdk.jmh:jmh-core:1.1.1"
+        compileOnly "org.openjdk.jmh:jmh-generator-annprocess:1.1.1"
+        compileOnly "io.dropwizard.metrics:metrics-core:3.1.0"
+        compileOnly "io.dropwizard.metrics:metrics-jvm:3.1.0"
+        compileOnly "com.addthis.metrics:reporter-config3:3.0.3"
+        compileOnly "org.mindrot:jbcrypt:0.3m"
+        compileOnly "io.airlift:airline:0.6"
+        compileOnly "io.netty:netty-all:4.0.44.Final"
+        compileOnly "com.clearspring.analytics:stream:2.5.2"
+        compileOnly "org.eclipse.jdt.core.compiler:ecj:4.4.2"
+        compileOnly "org.caffinitas.ohc:ohc-core:0.4.4"
+        compileOnly "org.caffinitas.ohc:ohc-core-j8:0.4.4"
+        compileOnly "net.ju-n.compile-command-annotations:compile-command-annotations:1.2.0"
+        compileOnly ("org.fusesource:sigar:1.6.4") {
             exclude group: "log4j", module: "log4j"
         }
-        compile "joda-time:joda-time:2.4"
-        compile "com.carrotsearch:hppc:0.5.4"
-        compile "de.jflex:jflex:1.6.0"
-        compile "com.github.rholder:snowball-stemmer:1.3.0.581.1"
-        compile "com.googlecode.concurrent-trees:concurrent-trees:2.4.0"
-        compile "com.github.ben-manes.caffeine:caffeine:2.3.5"
-        compile "org.jctools:jctools-core:1.2.1"
-        compile "org.apache.hadoop:hadoop-common:2.7.3"
+        compileOnly "joda-time:joda-time:2.4"
+        compileOnly "com.carrotsearch:hppc:0.5.4"
+        compileOnly "de.jflex:jflex:1.6.0"
+        compileOnly "com.github.rholder:snowball-stemmer:1.3.0.581.1"
+        compileOnly "com.googlecode.concurrent-trees:concurrent-trees:2.4.0"
+        compileOnly "com.github.ben-manes.caffeine:caffeine:2.3.5"
+        compileOnly "org.jctools:jctools-core:1.2.1"
+        compileOnly "org.apache.hadoop:hadoop-common:2.7.3"
 
         testCompile 'junit:junit:4.12'
     }
 
+    shadowJar {
+        zip64 true
+        from(project.sourceSets.main.output)
+        configurations = [project.configurations.runtime]
+        archiveName = "shadow-sstable-adaptor-cassandra.jar"
+
+        relocate 'org.apache.cassandra', 'shadow.org.apache.cassandra'
+    }
 }
 
 

@@ -346,7 +346,7 @@ public class FileHandle extends SharedCloseableImpl
         @SuppressWarnings("resource")
         public FileHandle complete(long overrideLength)
         {
-            ChannelProxy channelCopy = ChannelProxy.newInstance(path, this.conf);
+            ChannelProxy channelCopy = HadoopChannelProxy.newInstance(path, this.conf);
             try
             {
                 if (compressed && compressionMetadata == null)
